@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Coin Prices</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 20px;
+        display: flex;
+      }
+
+      h1 {
+        color: #333;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+      }
+
+      th,
+      td {
+        border: 1px solid #ddd;
+        padding: 10px;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f2f2f2;
+      }
+
+      .green-background {
+        background-color: #a3d2a1;
+      }
+
+      .red-background {
+        background-color: #e09d9d;
+      }
+    </style>
+  </head>
+  <body>
+    <table>
+      <thead>
+        <tr>
+          <th>Symbol</th>
+          <th class="">Current Price (USD)</th>
+          <th>High 24h (USD)</th>
+          <th>Price Change 30d (%)</th>
+        </tr>
+      </thead>
+      <tbody id="coinTableBody"></tbody>
+    </table>
+
+    <script>
+      async function fetchData() {
+        try {
+          const response = await fetch(
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=powblocks%2Caves%2Cbitnet%2Ccanxium%2Cdydx%2Ccallisto%2Cny-blockchain%2Cdogether%2Coctaspace%2Cdisney%2Cegaz&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=30d&locale=en"
+          );
+
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+          }
+
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Failed to fetch data:", error);
+          throw error;
+        }
+      }
+
+      async function displayData() {
+        const coinData = await fetchData();
+        const coinTableBody = document.getElementById("coinTableBody");
+
+        for (const coin of coinData) {
+          const { name, symbol, current_price, high_24h, price_change_percentage_30d_in_currency } = coin;
+
+          const row = document.createElement("tr");
+          const nameCell = document.createElement("td");
+          const priceCell = document.createElement("td");
+          const high24hCell = document.createElement("td");
+          const change30dCell = document.createElement("td");
+
+          nameCell.textContent = name;
+          priceCell.textContent = current_price;
+          high24hCell.textContent = high_24h;
+          change30dCell.textContent = price_change_percentage_30d_in_currency?.toFixed(2);
+
+          row.appendChild(nameCell);
+          row.appendChild(priceCell);
+          row.appendChild(high24hCell);
+          row.appendChild(change30dCell);
+
+          // Додавання класу для кольору фону
+          if (current_price > high_24h) {
+            priceCell.classList.add("green-background");
+          } else {
+            priceCell.classList.add("red-background");
+          }
+          if (price_change_percentage_30d_in_currency > 0) {
+            change30dCell.classList.add("green-background");
+          } else {
+            change30dCell.classList.add("red-background");
+          }
+
+          coinTableBody.appendChild(row);
+        }
+      }
+
+      displayData();
+    </script>
+  </body>
+</html>
