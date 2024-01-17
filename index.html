@@ -109,7 +109,7 @@
           <tr>
             <th>Coin Name</th>
             <th class="">Current Price (USD)</th>
-            <th>High 24h (USD)</th>
+            <th>Yesterday High 24h (USD)</th>
             <th>Price Change 24 hours (%)</th>
             <th>Price Change 7 day (%)</th>
             <th>Price Change 30 day (%)</th>
@@ -203,6 +203,11 @@
             } else {
               cell.classList.add("red-background");
             }
+          }
+          if (current_price > high_24h) {
+            priceCell.classList.add("green-background");
+          } else {
+            priceCell.classList.add("red-background");
           }
 
           coinTableBody.appendChild(row);
