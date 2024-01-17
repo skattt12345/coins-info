@@ -6,59 +6,126 @@
     <title>Coin Prices</title>
     <style>
       body {
-        font-family: Arial, sans-serif;
-        margin: 20px;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        margin: 0;
+        padding: 0;
         display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: #2c3e50;
+        min-width: 100vh;
       }
 
-      h1 {
-        color: #333;
+      .table-container {
+        width: 100%;
+        overflow: auto;
       }
 
       table {
         width: 100%;
         border-collapse: collapse;
-        margin-top: 20px;
+        box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        border-radius: 10px;
+        background: #fff;
+        margin: 2em 0;
+        color: #333;
+        border: 2px solid #3498db;
+        position: relative;
       }
 
       th,
       td {
         border: 1px solid #ddd;
-        padding: 10px;
+        padding: 15px;
         text-align: left;
+        white-space: nowrap;
       }
 
       th {
-        background-color: #f2f2f2;
+        background-color: #3498db;
+        color: white;
+        text-transform: uppercase;
+        position: sticky;
+        top: 0;
+        z-index: 2;
       }
 
       .green-background {
         background-color: #a3d2a1;
+        color: #006400;
       }
 
       .red-background {
         background-color: #e09d9d;
+        color: #8b0000;
+      }
+
+      tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.5);
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.3);
+      }
+
+      tbody tr:last-child {
+        border-bottom: 2px solid #673ab7;
+      }
+
+      td:first-child,
+      th:first-child {
+        border-top-left-radius: 10px;
+        border-bottom-left-radius: 10px;
+      }
+
+      td:last-child,
+      th:last-child {
+        border-top-right-radius: 10px;
+        border-bottom-right-radius: 10px;
+      }
+
+      @media screen and (max-width: 600px) {
+        th,
+        td {
+          font-size: 12px;
+          padding: 10px;
+        }
+
+        table {
+          margin: 1em 0;
+        }
+      }
+      .container {
+        overflow: scroll;
       }
     </style>
   </head>
   <body>
-    <table>
-      <thead>
-        <tr>
-          <th>Symbol</th>
-          <th class="">Current Price (USD)</th>
-          <th>High 24h (USD)</th>
-          <th>Price Change 30d (%)</th>
-        </tr>
-      </thead>
-      <tbody id="coinTableBody"></tbody>
-    </table>
+    <div class="container">
+      <table>
+        <thead>
+          <tr>
+            <th>Coin Name</th>
+            <th class="">Current Price (USD)</th>
+            <th>High 24h (USD)</th>
+            <th>Price Change 24 hours (%)</th>
+            <th>Price Change 7 day (%)</th>
+            <th>Price Change 30 day (%)</th>
+            <th>Price Change 200 day (%)</th>
+            <th>Price Change 1 day (%)</th>
+          </tr>
+        </thead>
+        <tbody id="coinTableBody"></tbody>
+      </table>
+    </div>
 
     <script>
       async function fetchData() {
         try {
           const response = await fetch(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=powblocks%2Caves%2Cbitnet%2Ccanxium%2Cdydx%2Ccallisto%2Cny-blockchain%2Cdogether%2Coctaspace%2Cdisney%2Cegaz&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=30d&locale=en"
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereumfair%2Cethereum-pow-iou%2Cpacman%2Czilliqa%2Ccanxium%2Caves%2Cbitnet%2Cpowblocks%2Clarissa-blockchain%2Ccallisto%2Cny-blockchain%2Cdogether%2Coctaspace%2Cdisney%2Cegaz%2Cethereum-classic&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h%2C7d%2C30d%2C200d%2C1y&locale=en"
           );
 
           if (!response.ok) {
@@ -66,6 +133,7 @@
           }
 
           const data = await response.json();
+          console.log(data);
           return data;
         } catch (error) {
           console.error("Failed to fetch data:", error);
@@ -78,40 +146,68 @@
         const coinTableBody = document.getElementById("coinTableBody");
 
         for (const coin of coinData) {
-          const { name, symbol, current_price, high_24h, price_change_percentage_30d_in_currency } = coin;
+          const {
+            name,
+            symbol,
+            current_price,
+            high_24h,
+            price_change_percentage_24h_in_currency,
+            price_change_percentage_7d_in_currency,
+            price_change_percentage_30d_in_currency,
+            price_change_percentage_200d_in_currency,
+            price_change_percentage_1y_in_currency,
+          } = coin;
 
           const row = document.createElement("tr");
           const nameCell = document.createElement("td");
           const priceCell = document.createElement("td");
           const high24hCell = document.createElement("td");
+          const change24hCell = document.createElement("td");
+          const change7dCell = document.createElement("td");
           const change30dCell = document.createElement("td");
+          const change200dCell = document.createElement("td");
+          const change1yCell = document.createElement("td");
 
           nameCell.textContent = name;
           priceCell.textContent = current_price;
           high24hCell.textContent = high_24h;
+          change24hCell.textContent = price_change_percentage_24h_in_currency?.toFixed(2);
+          change7dCell.textContent = price_change_percentage_7d_in_currency?.toFixed(2);
           change30dCell.textContent = price_change_percentage_30d_in_currency?.toFixed(2);
+          change200dCell.textContent = price_change_percentage_200d_in_currency?.toFixed(2);
+          change1yCell.textContent = price_change_percentage_1y_in_currency?.toFixed(2);
 
           row.appendChild(nameCell);
           row.appendChild(priceCell);
           row.appendChild(high24hCell);
+          row.appendChild(change24hCell);
+          row.appendChild(change7dCell);
           row.appendChild(change30dCell);
+          row.appendChild(change200dCell);
+          row.appendChild(change1yCell);
 
           // Додавання класу для кольору фону
-          if (current_price > high_24h) {
-            priceCell.classList.add("green-background");
-          } else {
-            priceCell.classList.add("red-background");
-          }
-          if (price_change_percentage_30d_in_currency > 0) {
-            change30dCell.classList.add("green-background");
-          } else {
-            change30dCell.classList.add("red-background");
+          const percentageData = [
+            { cell: change24hCell, value: price_change_percentage_24h_in_currency },
+            { cell: change7dCell, value: price_change_percentage_7d_in_currency },
+            { cell: change30dCell, value: price_change_percentage_30d_in_currency },
+            { cell: change200dCell, value: price_change_percentage_200d_in_currency },
+            { cell: change1yCell, value: price_change_percentage_1y_in_currency },
+          ];
+
+          for (const item of percentageData) {
+            const { cell, value } = item;
+
+            if (value > 0) {
+              cell.classList.add("green-background");
+            } else {
+              cell.classList.add("red-background");
+            }
           }
 
           coinTableBody.appendChild(row);
         }
       }
-
       displayData();
     </script>
   </body>
