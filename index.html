@@ -78,20 +78,20 @@
         const coinTableBody = document.getElementById("coinTableBody");
 
         for (const coin of coinData) {
-          const { symbol, current_price, high_24h, price_change_percentage_30d_in_currency } = coin;
+          const { name, symbol, current_price, high_24h, price_change_percentage_30d_in_currency } = coin;
 
           const row = document.createElement("tr");
-          const symbolCell = document.createElement("td");
+          const nameCell = document.createElement("td");
           const priceCell = document.createElement("td");
           const high24hCell = document.createElement("td");
           const change30dCell = document.createElement("td");
 
-          symbolCell.textContent = symbol;
+          nameCell.textContent = name;
           priceCell.textContent = current_price;
           high24hCell.textContent = high_24h;
-          change30dCell.textContent = price_change_percentage_30d_in_currency;
+          change30dCell.textContent = price_change_percentage_30d_in_currency?.toFixed(2);
 
-          row.appendChild(symbolCell);
+          row.appendChild(nameCell);
           row.appendChild(priceCell);
           row.appendChild(high24hCell);
           row.appendChild(change30dCell);
