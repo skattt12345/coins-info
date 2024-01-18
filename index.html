@@ -100,6 +100,11 @@
       .container {
         overflow: scroll;
       }
+      .coin-image {
+        padding: 0;
+        margin: 0 auto;
+        text-align: center;
+      }
     </style>
   </head>
   <body>
@@ -107,6 +112,7 @@
       <table>
         <thead>
           <tr>
+            <th class="coin-image">Coin Image</th>
             <th>Coin Name</th>
             <th class="">Current Price (USD)</th>
             <th>Yesterday High 24h (USD)</th>
@@ -156,9 +162,11 @@
             price_change_percentage_30d_in_currency,
             price_change_percentage_200d_in_currency,
             price_change_percentage_1y_in_currency,
+            image,
           } = coin;
 
           const row = document.createElement("tr");
+          const imageCell = document.createElement("td");
           const nameCell = document.createElement("td");
           const priceCell = document.createElement("td");
           const high24hCell = document.createElement("td");
@@ -167,6 +175,15 @@
           const change30dCell = document.createElement("td");
           const change200dCell = document.createElement("td");
           const change1yCell = document.createElement("td");
+
+          imageCell.classList.add("coin-image");
+
+          const coinImage = document.createElement("img"); // create image element
+          coinImage.src = image; // set image source
+          coinImage.alt = `${name} Logo`; // set image alt attribute
+          coinImage.style.width = "30px"; // adjust image width if needed
+
+          imageCell.appendChild(coinImage); // append image to cell
 
           nameCell.textContent = name;
           priceCell.textContent = current_price;
@@ -177,6 +194,7 @@
           change200dCell.textContent = price_change_percentage_200d_in_currency?.toFixed(2);
           change1yCell.textContent = price_change_percentage_1y_in_currency?.toFixed(2);
 
+          row.appendChild(imageCell);
           row.appendChild(nameCell);
           row.appendChild(priceCell);
           row.appendChild(high24hCell);
