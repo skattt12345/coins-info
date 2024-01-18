@@ -23,7 +23,8 @@
       }
 
       table {
-        width: 100%;
+        /* width: 100%; */
+        width: max-content;
         border-collapse: collapse;
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
         border-radius: 10px;
@@ -89,7 +90,7 @@
       @media screen and (max-width: 600px) {
         th,
         td {
-          font-size: 12px;
+          font-size: 16px;
           padding: 10px;
         }
 
@@ -100,10 +101,16 @@
       .container {
         overflow: scroll;
       }
+
       .coin-image {
-        padding: 0;
-        margin: 0 auto;
         text-align: center;
+      }
+      .coin-image-second {
+        text-align: center;
+        position: sticky;
+        z-index: 4;
+        left: 0;
+        background-color: #3498db;
       }
     </style>
   </head>
@@ -113,8 +120,8 @@
         <thead>
           <tr>
             <th class="coin-image">Coin Image</th>
-            <th>Coin Name</th>
-            <th class="">Current Price (USD)</th>
+            <th class="coin-image-second">Coin Name</th>
+            <th>Current Price (USD)</th>
             <th>Yesterday High 24h (USD)</th>
             <th>Price Change 24 hours (%)</th>
             <th>Price Change 7 day (%)</th>
@@ -177,6 +184,7 @@
           const change1yCell = document.createElement("td");
 
           imageCell.classList.add("coin-image");
+          nameCell.classList.add("coin-image-second");
 
           const coinImage = document.createElement("img"); // create image element
           coinImage.src = image; // set image source
