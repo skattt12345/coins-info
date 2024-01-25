@@ -23,15 +23,11 @@
       }
 
       table {
-        /* width: 100%; */
         width: max-content;
-        border-collapse: collapse;
         box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-        border-radius: 10px;
         background: #fff;
         margin: 2em 0;
         color: #333;
-        border: 2px solid #3498db;
         position: relative;
       }
 
@@ -90,8 +86,8 @@
       @media screen and (max-width: 600px) {
         th,
         td {
-          font-size: 16px;
-          padding: 5px;
+          font-size: 14px;
+          padding: 3px;
           text-align: center;
         }
 
@@ -105,7 +101,7 @@
         }
       }
       .container {
-        overflow: scroll;
+        overflow-x: scroll;
         display: flex;
       }
 
@@ -119,34 +115,87 @@
         left: 0;
         background-color: #3498db;
       }
+      table.dark-mode {
+        background: #000; /* Set dark mode background color to black */
+        color: #fff; /* Set dark mode text color to white */
+      }
+      td.dark-mode{
+
+      }
+      th.dark-mode{
+        background-color: #0c0d0e;
+        color: #fff;
+
+
+      }
+      td.dark-mode{
+        background-color: #26475d;
+        color: #fff;
+
+      }
+      td.coin-image-second.dark-mode{
+        background-color: #0b2334;
+        color: #fff;
+      }
+      .green-background.dark-mode {
+        background-color: #3f893f!important;
+        color: #fff;
+      }
+
+      .red-background.dark-mode {
+        background-color:#933e2a!important;
+        color: #fff;
+      } 
+      .dark-mode-toggle {
+        cursor: pointer;
+        /* position: sticky; */
+        top: 30px;
+        left: 30px;
+        font-size: 30px; 
+        z-index: 30;
+      }
+      #moon {
+        display: none;
+      }
+
+      #sun {
+        cursor: pointer;
+      }
+
+     
     </style>
   </head>
   <body>
     <div class="container">
-      <table>
+      <div class="dark-mode-toggle" onclick="toggleDarkMode()">
+        <span id="moon">&#127774;</span>
+        <span id="sun">&#9728;</span>
+      </div>
+      <table class=>
         <thead>
           <tr>
             <th class="coin-image">Image</th>
             <th class="coin-image-second">Coin</th>
-            <th>Current Price (USD)</th>
-            <th>Yesterday High 24h (USD)</th>
-            <th>Price Change 24 hours (%)</th>
-            <th>Price Change 7 day (%)</th>
-            <th>Price Change 30 day (%)</th>
-            <th>Price Change 200 day (%)</th>
-            <th>Price Change 1 Year (%)</th>
+            <th>Current</th>
+            <th>HIGH 24h</th>
+            <th>24 hours(%)</th>
+            <th>7 day(%)</th>
+            <th>30 day(%)</th>
+            <th>200 day(%)</th>
+            <th>1 Year(%)</th>
+            <th>Network</th>
           </tr>
         </thead>
         <tbody id="coinTableBody"></tbody>
       </table>
       <table id="coinsTable">
-        <thead>
+        <!-- <thead>
           <tr>
             <th>COIN</th>
             <th>Сеть</th>
           </tr>
         </thead>
-        <tbody></tbody>
+        <tbody></tbody> -->
       </table>
       <table>
         <thead>
@@ -155,39 +204,41 @@
           </tr>
         </thead>
         <tbody>
-          <!-- Додайте рядок для кожної позиції -->
           <tr>
-            <td>2.63 Th/s</td>
+            <td>1810.20 Th/s</td>
           </tr>
           <tr>
-            <td>11.59 Th/s</td>
+            <td>346.43 Th/s</td>
           </tr>
           <tr>
-            <td>19.95 Th/s</td>
+            <td>175.85 Th/s</td>
+          </tr>
+          <tr>
+            <td>45.22 Th/s</td>
           </tr>
           <tr>
             <td>1.01 Th/s</td>
           </tr>
           <tr>
-            <td>10.95 Th/s</td>
+            <td>54.85 Th/s</td>
           </tr>
           <tr>
-            <td>1.60 Th/s</td>
+            <td>19.95 Th/s</td>
           </tr>
           <tr>
-            <td>1.37 Th/s</td>
-          </tr>
-          <tr>
-            <td>0.14 Th/s</td>
-          </tr>
-          <tr>
-            <td>1810.20 Th/s</td>
+            <td>11.59 Th/s</td>
           </tr>
           <tr>
             <td>5.81 Th/s</td>
           </tr>
           <tr>
-            <td>175.85 Th/s</td>
+            <td>10.95 Th/s</td>
+          </tr>
+          <tr>
+            <td>1.37 Th/s</td>
+          </tr>
+          <tr>
+            <td>2.63 Th/s</td>
           </tr>
           <tr>
             <td>39.32 Th/s</td>
@@ -196,34 +247,39 @@
             <td>4.74 Th/s</td>
           </tr>
           <tr>
-            <td>45.22 Th/s</td>
-          </tr>
-          <tr>
             <td>0.00 Th/s</td>
-          </tr>
-          <tr>
-            <td>0.45 Th/s</td>
-          </tr>
-          <tr>
-            <td>0.72 Th/s</td>
-          </tr>
-          <tr>
-            <td>5.29 Th/s</td>
-          </tr>
-          <tr>
-            <td>0.12 Th/s</td>
-          </tr>
-          <tr>
-            <td>54.85 Th/s</td>
-          </tr>
-          <tr>
-            <td>346.43 Th/s</td>
           </tr>
         </tbody>
       </table>
+      
     </div>
 
     <script>
+    
+      function toggleDarkMode() {
+        const body = document.body;
+        body.classList.toggle("dark-mode");
+
+        const moon = document.getElementById("moon");
+        const sun = document.getElementById("sun");
+
+        moon.style.display = body.classList.contains("dark-mode") ? "inline" : "none";
+        sun.style.display = body.classList.contains("dark-mode") ? "none" : "inline";
+        const th = document.querySelectorAll("th");
+        const table = document.querySelectorAll("table");
+        const td = document.querySelectorAll("td");
+        const coinImage = document.querySelectorAll(".coin-image-second");
+        const greenBackground = document.querySelectorAll(".coin-image-second");
+
+        console.log(coinImage);
+        table.forEach((x) => x.classList.toggle("dark-mode"))
+
+        th.forEach((x) => x.classList.toggle("dark-mode"))
+        td.forEach((x) => x.classList.toggle("dark-mode"))
+        coinImage.forEach((x) => x.classList.toggle("dark-mode"))
+        greenBackground.forEach((x) => x.classList.toggle("dark-mode"))
+        
+      }
       async function fetchData() {
         try {
           const response = await fetch(
@@ -241,126 +297,148 @@
           throw error;
         }
       }
-
-      async function displayData() {
-        const coinData = await fetchData();
-        const coinTableBody = document.getElementById("coinTableBody");
-
-        for (const coin of coinData) {
-          const {
-            name,
-            symbol,
-            current_price,
-            high_24h,
-            price_change_percentage_24h_in_currency,
-            price_change_percentage_7d_in_currency,
-            price_change_percentage_30d_in_currency,
-            price_change_percentage_200d_in_currency,
-            price_change_percentage_1y_in_currency,
-            image,
-          } = coin;
-
-          const row = document.createElement("tr");
-          const imageCell = document.createElement("td");
-          const nameCell = document.createElement("td");
-          const priceCell = document.createElement("td");
-          const high24hCell = document.createElement("td");
-          const change24hCell = document.createElement("td");
-          const change7dCell = document.createElement("td");
-          const change30dCell = document.createElement("td");
-          const change200dCell = document.createElement("td");
-          const change1yCell = document.createElement("td");
-
-          imageCell.classList.add("coin-image");
-          nameCell.classList.add("coin-image-second");
-
-          const coinImage = document.createElement("img");
-          coinImage.src = image;
-          coinImage.alt = `${name} Logo`;
-          coinImage.style.width = "30px";
-
-          imageCell.appendChild(coinImage); // append image to cell
-
-          nameCell.textContent = name;
-          priceCell.textContent = current_price;
-          high24hCell.textContent = high_24h;
-          change24hCell.textContent = price_change_percentage_24h_in_currency?.toFixed(2);
-          change7dCell.textContent = price_change_percentage_7d_in_currency?.toFixed(2);
-          change30dCell.textContent = price_change_percentage_30d_in_currency?.toFixed(2);
-          change200dCell.textContent = price_change_percentage_200d_in_currency?.toFixed(2);
-          change1yCell.textContent = price_change_percentage_1y_in_currency?.toFixed(2);
-
-          row.appendChild(imageCell);
-          row.appendChild(nameCell);
-          row.appendChild(priceCell);
-          row.appendChild(high24hCell);
-          row.appendChild(change24hCell);
-          row.appendChild(change7dCell);
-          row.appendChild(change30dCell);
-          row.appendChild(change200dCell);
-          row.appendChild(change1yCell);
-
-          // Додавання класу для кольору фону
-          const percentageData = [
-            { cell: change24hCell, value: price_change_percentage_24h_in_currency },
-            { cell: change7dCell, value: price_change_percentage_7d_in_currency },
-            { cell: change30dCell, value: price_change_percentage_30d_in_currency },
-            { cell: change200dCell, value: price_change_percentage_200d_in_currency },
-            { cell: change1yCell, value: price_change_percentage_1y_in_currency },
-          ];
-
-          for (const item of percentageData) {
-            const { cell, value } = item;
-
-            if (value > 0) {
-              cell.classList.add("green-background");
-            } else {
-              cell.classList.add("red-background");
-            }
-          }
-          if (current_price > high_24h) {
-            priceCell.classList.add("green-background");
-          } else {
-            priceCell.classList.add("red-background");
+      async function fetchDataDifficulty() {
+        try {
+          const response = await fetch("https://api.comining.io/?key=X3THfYAYYmxUvfozzzKJ6qQ", {
+            method: "POST",
+            body: JSON.stringify({ method: "coins_list" }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
           }
 
-          coinTableBody.appendChild(row);
+          const data = await response.json();
+          return data;
+        } catch (error) {
+          console.error("Failed to fetch data:", error);
         }
       }
+
+      async function displayData() {
+        try {
+          const coinData = await fetchData();
+          const difficultyData = await fetchDataDifficulty();
+
+          const coinTableBody = document.getElementById("coinTableBody");
+          const processedCoinSymbols = new Set();
+
+          for (let i = 0; i < coinData.length; i++) {
+            const coin = coinData[i];
+
+            if (processedCoinSymbols.has(coin.symbol.toUpperCase())) {
+              console.warn(`Coin already processed: ${coin.name}`);
+              continue;
+            }
+
+            const difficulty = difficultyData.data.find((item) => {
+              return item.coin.toUpperCase() === coin.symbol.toUpperCase();
+            });
+
+            if (!difficulty) {
+              console.warn(`Difficulty data not found for coin: ${coin.name}`);
+              continue;
+            }
+
+            processedCoinSymbols.add(coin.symbol.toUpperCase());
+
+            const {
+              name,
+              symbol,
+              current_price,
+              high_24h,
+              price_change_percentage_24h_in_currency,
+              price_change_percentage_7d_in_currency,
+              price_change_percentage_30d_in_currency,
+              price_change_percentage_200d_in_currency,
+              price_change_percentage_1y_in_currency,
+              image,
+            } = coin;
+
+            const row = document.createElement("tr");
+            const imageCell = document.createElement("td");
+            const nameCell = document.createElement("td");
+            const priceCell = document.createElement("td");
+            const high24hCell = document.createElement("td");
+            const change24hCell = document.createElement("td");
+            const change7dCell = document.createElement("td");
+            const change30dCell = document.createElement("td");
+            const change200dCell = document.createElement("td");
+            const change1yCell = document.createElement("td");
+            const difficultyCell = document.createElement("td");
+
+            imageCell.classList.add("coin-image");
+            nameCell.classList.add("coin-image-second");
+
+            const coinImage = document.createElement("img");
+            coinImage.src = image;
+            coinImage.alt = `${name} Logo`;
+            coinImage.style.width = "30px";
+
+            imageCell.appendChild(coinImage); 
+
+            nameCell.textContent = name;
+            priceCell.textContent = current_price.toFixed(6);
+            high24hCell.textContent = high_24h.toFixed(6);
+            change24hCell.textContent = price_change_percentage_24h_in_currency?.toFixed(2);
+            change7dCell.textContent = price_change_percentage_7d_in_currency?.toFixed(2);
+            change30dCell.textContent = price_change_percentage_30d_in_currency?.toFixed(2);
+            change200dCell.textContent = price_change_percentage_200d_in_currency?.toFixed(2);
+            change1yCell.textContent = price_change_percentage_1y_in_currency?.toFixed(2);
+
+            // Display difficulty data
+            difficultyCell.textContent = convertToTeraHash(difficulty?.networkDifficulty) + " Th/s";
+
+            row.appendChild(imageCell);
+            row.appendChild(nameCell);
+            row.appendChild(priceCell);
+            row.appendChild(high24hCell);
+            row.appendChild(change24hCell);
+            row.appendChild(change7dCell);
+            row.appendChild(change30dCell);
+            row.appendChild(change200dCell);
+            row.appendChild(change1yCell);
+            row.appendChild(difficultyCell);
+
+            const percentageData = [
+              { cell: change24hCell, value: price_change_percentage_24h_in_currency },
+              { cell: change7dCell, value: price_change_percentage_7d_in_currency },
+              { cell: change30dCell, value: price_change_percentage_30d_in_currency },
+              { cell: change200dCell, value: price_change_percentage_200d_in_currency },
+              { cell: change1yCell, value: price_change_percentage_1y_in_currency },
+            ];
+
+            for (const item of percentageData) {
+              const { cell, value } = item;
+
+              if (value > 0) {
+                cell.classList.add("green-background");
+              } else {
+                cell.classList.add("red-background");
+              }
+            }
+
+            if (current_price > high_24h) {
+              priceCell.classList.add("green-background");
+            } else {
+              priceCell.classList.add("red-background");
+            }
+
+            coinTableBody.appendChild(row);
+          }
+        } catch (error) {
+          console.error("Error displaying data:", error);
+        }
+      }
+
       displayData();
+
       function convertToTeraHash(difficulty) {
         return (difficulty / 1e12).toFixed(2);
       }
 
-      // Fetch data from the API
-      fetch("https://api.comining.io/?key=X3THfYAYYmxUvfozzzKJ6qQ", {
-        method: "POST",
-        body: JSON.stringify({ method: "coins_list" }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Network response was not ok");
-          }
-          return response.json();
-        })
-        .then((data) => {
-          const tableBody = document.querySelector("#coinsTable tbody");
-
-          data.data.forEach((coin) => {
-            const row = tableBody.insertRow();
-            const coinNameCell = row.insertCell(0);
-            const difficultyCell = row.insertCell(1);
-
-            coinNameCell.textContent = coin.coin;
-            difficultyCell.textContent = convertToTeraHash(coin.networkDifficulty) + " Th/s";
-          });
-        })
-        .catch((error) => {
-          console.error("Fetch error:", error);
-        });
     </script>
   </body>
 </html>
