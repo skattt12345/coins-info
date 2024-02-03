@@ -111,47 +111,54 @@
       .coin-image-second {
         text-align: center;
         position: sticky;
+        cursor: pointer;
         z-index: 4;
         left: 0;
         background-color: #3498db;
+      }
+
+      .coin-image-second:hover {
+        background-color: #bacad5;
       }
       table.dark-mode {
         background: #000; /* Set dark mode background color to black */
         color: #fff; /* Set dark mode text color to white */
       }
-      td.dark-mode{
-
+      td.dark-mode {
       }
-      th.dark-mode{
+      th.dark-mode {
         background-color: #0c0d0e;
         color: #fff;
-
-
       }
-      td.dark-mode{
+      .container::-webkit-scrollbar {
+        display: none;
+      }
+      td.dark-mode {
         background-color: #26475d;
         color: #fff;
-
       }
-      td.coin-image-second.dark-mode{
+      td.coin-image-second.dark-mode {
         background-color: #0b2334;
         color: #fff;
       }
+      td.coin-image-second.dark-mode:hover {
+        background-color: #26475d;
+      }
       .green-background.dark-mode {
-        background-color: #3f893f!important;
+        background-color: #3f893f !important;
         color: #fff;
       }
 
       .red-background.dark-mode {
-        background-color:#933e2a!important;
+        background-color: #933e2a !important;
         color: #fff;
-      } 
+      }
       .dark-mode-toggle {
         cursor: pointer;
         /* position: sticky; */
         top: 30px;
         left: 30px;
-        font-size: 30px; 
+        font-size: 30px;
         z-index: 30;
       }
       #moon {
@@ -161,8 +168,14 @@
       #sun {
         cursor: pointer;
       }
+      a {
+        color: #0c0d0e; /* Колір тексту посилань */
+        text-decoration: none; /* Відміна підкреслення тексту посилань */
+      }
 
-     
+      .dark-mode a {
+        color: #fff; /* Колір тексту посилань у темному режимі */
+      }
     </style>
   </head>
   <body>
@@ -171,7 +184,7 @@
         <span id="moon">&#127774;</span>
         <span id="sun">&#9728;</span>
       </div>
-      <table class=>
+      <table>
         <thead>
           <tr>
             <th class="coin-image">Image</th>
@@ -187,15 +200,6 @@
           </tr>
         </thead>
         <tbody id="coinTableBody"></tbody>
-      </table>
-      <table id="coinsTable">
-        <!-- <thead>
-          <tr>
-            <th>COIN</th>
-            <th>Сеть</th>
-          </tr>
-        </thead>
-        <tbody></tbody> -->
       </table>
       <table>
         <thead>
@@ -251,11 +255,9 @@
           </tr>
         </tbody>
       </table>
-      
     </div>
 
     <script>
-    
       function toggleDarkMode() {
         const body = document.body;
         body.classList.toggle("dark-mode");
@@ -272,13 +274,12 @@
         const greenBackground = document.querySelectorAll(".coin-image-second");
 
         console.log(coinImage);
-        table.forEach((x) => x.classList.toggle("dark-mode"))
+        table.forEach((x) => x.classList.toggle("dark-mode"));
 
-        th.forEach((x) => x.classList.toggle("dark-mode"))
-        td.forEach((x) => x.classList.toggle("dark-mode"))
-        coinImage.forEach((x) => x.classList.toggle("dark-mode"))
-        greenBackground.forEach((x) => x.classList.toggle("dark-mode"))
-        
+        th.forEach((x) => x.classList.toggle("dark-mode"));
+        td.forEach((x) => x.classList.toggle("dark-mode"));
+        coinImage.forEach((x) => x.classList.toggle("dark-mode"));
+        greenBackground.forEach((x) => x.classList.toggle("dark-mode"));
       }
       async function fetchData() {
         try {
@@ -377,9 +378,9 @@
             coinImage.alt = `${name} Logo`;
             coinImage.style.width = "30px";
 
-            imageCell.appendChild(coinImage); 
+            imageCell.appendChild(coinImage);
 
-            nameCell.textContent = name;
+            // nameCell.textContent = name;
             priceCell.textContent = current_price.toFixed(6);
             high24hCell.textContent = high_24h.toFixed(6);
             change24hCell.textContent = price_change_percentage_24h_in_currency?.toFixed(2);
@@ -401,6 +402,19 @@
             row.appendChild(change200dCell);
             row.appendChild(change1yCell);
             row.appendChild(difficultyCell);
+
+            const formattedSymbol = name.toLowerCase().replace(/ /g, "-");
+
+            const coinLink = document.createElement("a");
+            coinLink.href = `https://www.coingecko.com/en/coins/${formattedSymbol}`;
+            coinLink.textContent = name;
+            coinLink.target = "_blank";
+
+            nameCell.addEventListener("click", function () {
+              window.open(coinLink.href, "_blank");
+            });
+
+            nameCell.appendChild(coinLink);
 
             const percentageData = [
               { cell: change24hCell, value: price_change_percentage_24h_in_currency },
@@ -438,7 +452,6 @@
       function convertToTeraHash(difficulty) {
         return (difficulty / 1e12).toFixed(2);
       }
-
     </script>
   </body>
 </html>
