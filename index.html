@@ -221,43 +221,42 @@
             <td>45.22 Th/s</td>
           </tr>
           <tr>
+            <td>17.53 Th/s</td>
+          </tr>
+          <tr>
             <td>1.01 Th/s</td>
           </tr>
           <tr>
             <td>54.85 Th/s</td>
           </tr>
           <tr>
-            <td>19.95 Th/s</td>
+            <td>10.55 Th/s</td>
+          </tr>
+
+          <tr>
+            <td>37.63 Th/s</td>
           </tr>
           <tr>
-            <td>11.59 Th/s</td>
-          </tr>
-          <tr>
-            <td>5.81 Th/s</td>
-          </tr>
-          <tr>
-            <td>10.95 Th/s</td>
-          </tr>
-          <tr>
-            <td>1.37 Th/s</td>
+            <td>00.00 Th/s</td>
           </tr>
           <tr>
             <td>2.63 Th/s</td>
           </tr>
+
           <tr>
-            <td>39.32 Th/s</td>
-          </tr>
-          <tr>
-            <td>4.74 Th/s</td>
-          </tr>
-          <tr>
-            <td>0.00 Th/s</td>
+            <td>1.22 Th/s</td>
           </tr>
         </tbody>
       </table>
     </div>
 
     <script>
+      document.addEventListener("visibilitychange", function () {
+        if (document.visibilityState === "visible") {
+          location.reload();
+        }
+      });
+
       function toggleDarkMode() {
         const body = document.body;
         body.classList.toggle("dark-mode");
@@ -284,8 +283,11 @@
       async function fetchData() {
         try {
           const response = await fetch(
-            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereumfair%2Cethereum-pow-iou%2Cpacman%2Czilliqa%2Ccanxium%2Caves%2Cbitnet%2Cpowblocks%2Clarissa-blockchain%2Ccallisto%2Cny-blockchain%2Cdogether%2Coctaspace%2Cdisney%2Cegaz%2Cethereum-classic&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h%2C7d%2C30d%2C200d%2C1y&locale=en"
+            "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereum-pow-iou%2Cpacman%2Czilliqa%2Ccanxium%2Caves%2Cbitnet%2Cpowblocks%2Clarissa-blockchain%2Ccallisto%2Coctaspace%2Cegaz%2Cethereum-classic&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h%2C7d%2C30d%2C200d%2C1y&locale=en"
           );
+          // const response = await fetch(
+          //   "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=ethereumfair%2Cethereum-pow-iou%2Cpacman%2Czilliqa%2Ccanxium%2Caves%2Cbitnet%2Cpowblocks%2Clarissa-blockchain%2Ccallisto%2Cny-blockchain%2Cdogether%2Coctaspace%2Cdisney%2Cegaz%2Cethereum-classic&order=market_cap_desc&per_page=100&page=1&sparkline=false&price_change_percentage=24h%2C7d%2C30d%2C200d%2C1y&locale=en"
+          // );
 
           if (!response.ok) {
             throw new Error(`HTTP error! Status: ${response.status}`);
