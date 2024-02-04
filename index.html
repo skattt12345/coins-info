@@ -197,56 +197,10 @@
             <th>200 day(%)</th>
             <th>1 Year(%)</th>
             <th>Network</th>
-          </tr>
-        </thead>
-        <tbody id="coinTableBody"></tbody>
-      </table>
-      <table>
-        <thead>
-          <tr>
             <th>23.01.24</th>
           </tr>
         </thead>
-        <tbody>
-          <tr>
-            <td>1810.20 Th/s</td>
-          </tr>
-          <tr>
-            <td>346.43 Th/s</td>
-          </tr>
-          <tr>
-            <td>175.85 Th/s</td>
-          </tr>
-          <tr>
-            <td>45.22 Th/s</td>
-          </tr>
-          <tr>
-            <td>17.53 Th/s</td>
-          </tr>
-          <tr>
-            <td>1.01 Th/s</td>
-          </tr>
-          <tr>
-            <td>54.85 Th/s</td>
-          </tr>
-          <tr>
-            <td>10.55 Th/s</td>
-          </tr>
-
-          <tr>
-            <td>37.63 Th/s</td>
-          </tr>
-          <tr>
-            <td>00.00 Th/s</td>
-          </tr>
-          <tr>
-            <td>2.63 Th/s</td>
-          </tr>
-
-          <tr>
-            <td>1.22 Th/s</td>
-          </tr>
-        </tbody>
+        <tbody id="coinTableBody"></tbody>
       </table>
     </div>
 
@@ -272,7 +226,6 @@
         const coinImage = document.querySelectorAll(".coin-image-second");
         const greenBackground = document.querySelectorAll(".coin-image-second");
 
-        console.log(coinImage);
         table.forEach((x) => x.classList.toggle("dark-mode"));
 
         th.forEach((x) => x.classList.toggle("dark-mode"));
@@ -347,6 +300,23 @@
 
             processedCoinSymbols.add(coin.symbol.toUpperCase());
 
+            const hardCodeDifficulty = {
+              23.02: {
+                lrs: "37.63",
+                etc: "1810.20",
+                zil: "346.43",
+                ethw: "175.85",
+                octa: "45.22",
+                cau: "17.53",
+                clo: "1.01",
+                xpb: "54.85",
+                btn: "10.55",
+                pac: "0.00",
+                avs: "2.63",
+                egaz: "1.22",
+              },
+            };
+
             const {
               name,
               symbol,
@@ -371,6 +341,7 @@
             const change200dCell = document.createElement("td");
             const change1yCell = document.createElement("td");
             const difficultyCell = document.createElement("td");
+            const difficultyCell2301 = document.createElement("td");
 
             imageCell.classList.add("coin-image");
             nameCell.classList.add("coin-image-second");
@@ -393,6 +364,7 @@
 
             // Display difficulty data
             difficultyCell.textContent = convertToTeraHash(difficulty?.networkDifficulty) + " Th/s";
+            difficultyCell2301.textContent = hardCodeDifficulty["23.02"][coin.symbol.toLowerCase()] + " Th/s";
 
             row.appendChild(imageCell);
             row.appendChild(nameCell);
@@ -404,6 +376,7 @@
             row.appendChild(change200dCell);
             row.appendChild(change1yCell);
             row.appendChild(difficultyCell);
+            row.appendChild(difficultyCell2301);
 
             const formattedSymbol = name.toLowerCase().replace(/ /g, "-");
 
