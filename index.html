@@ -124,8 +124,7 @@
         background: #000; /* Set dark mode background color to black */
         color: #fff; /* Set dark mode text color to white */
       }
-      td.dark-mode {
-      }
+
       th.dark-mode {
         background-color: #0c0d0e;
         color: #fff;
@@ -196,6 +195,7 @@
             <th>1 Year(%)</th>
             <th>Network</th>
             <th>23.01.24</th>
+            <th>12.02.24</th>
           </tr>
         </thead>
         <tbody id="coinTableBody"></tbody>
@@ -203,12 +203,30 @@
     </div>
 
     <script>
+      let reloadTimeout;
+      let lastInvisibleTime;
+
       document.addEventListener("visibilitychange", function () {
         if (document.visibilityState === "visible") {
-          location.reload();
+          // Сторінка стала видимою
+          clearTimeout(reloadTimeout);
+        } else {
+          // Сторінка стала невидимою
+          lastInvisibleTime = Date.now();
+          reloadTimeout = setTimeout(function () {
+            location.reload();
+          }, 5 * 60 * 1000);
         }
       });
 
+      document.addEventListener("DOMContentLoaded", function () {
+        if (document.visibilityState === "hidden" && lastInvisibleTime) {
+          const elapsedTime = Date.now() - lastInvisibleTime;
+          if (elapsedTime >= 30 * 1000) {
+            location.reload();
+          }
+        }
+      });
       function toggleDarkMode() {
         const body = document.body;
         body.classList.toggle("dark-mode");
@@ -245,6 +263,7 @@
           }
 
           const data = await response.json();
+          console.log(data);
           return data;
         } catch (error) {
           console.error("Failed to fetch data:", error);
@@ -299,7 +318,7 @@
             processedCoinSymbols.add(coin.symbol.toUpperCase());
 
             const hardCodeDifficulty = {
-              23.02: {
+              23.01: {
                 lrs: "37.63",
                 etc: "1810.20",
                 zil: "346.43",
@@ -312,6 +331,22 @@
                 pac: "0.00",
                 avs: "2.63",
                 egaz: "1.22",
+              },
+            };
+            const hardCodeDifficulty1202 = {
+              12.02: {
+                lrs: "21.47",
+                etc: "2051.91",
+                zil: "500.43",
+                ethw: "163.44",
+                octa: "44.61",
+                cau: "29.08",
+                clo: "0.97",
+                xpb: "42.39",
+                btn: "11.16",
+                pac: "0.00",
+                avs: "3.01",
+                egaz: "1.04",
               },
             };
 
@@ -340,6 +375,7 @@
             const change1yCell = document.createElement("td");
             const difficultyCell = document.createElement("td");
             const difficultyCell2301 = document.createElement("td");
+            const difficultyCell1202 = document.createElement("td");
 
             imageCell.classList.add("coin-image");
             nameCell.classList.add("coin-image-second");
@@ -362,7 +398,8 @@
 
             // Display difficulty data
             difficultyCell.textContent = convertToTeraHash(difficulty?.networkDifficulty) + " Th/s";
-            difficultyCell2301.textContent = hardCodeDifficulty["23.02"][coin.symbol.toLowerCase()] + " Th/s";
+            difficultyCell2301.textContent = hardCodeDifficulty["23.01"][coin.symbol.toLowerCase()] + " Th/s";
+            difficultyCell1202.textContent = hardCodeDifficulty1202["12.02"][coin.symbol.toLowerCase()] + " Th/s";
 
             row.appendChild(imageCell);
             row.appendChild(nameCell);
@@ -375,6 +412,7 @@
             row.appendChild(change1yCell);
             row.appendChild(difficultyCell);
             row.appendChild(difficultyCell2301);
+            row.appendChild(difficultyCell1202);
 
             const formattedSymbol = name.toLowerCase().replace(/ /g, "-");
 
