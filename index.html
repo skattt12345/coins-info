@@ -194,8 +194,8 @@
             <th>200 day(%)</th>
             <th>1 Year(%)</th>
             <th>Network</th>
-            <th>23.01.24</th>
             <th>12.02.24</th>
+            <th>23.01.24</th>
           </tr>
         </thead>
         <tbody id="coinTableBody"></tbody>
@@ -374,8 +374,8 @@
             const change200dCell = document.createElement("td");
             const change1yCell = document.createElement("td");
             const difficultyCell = document.createElement("td");
-            const difficultyCell2301 = document.createElement("td");
             const difficultyCell1202 = document.createElement("td");
+            const difficultyCell2301 = document.createElement("td");
 
             imageCell.classList.add("coin-image");
             nameCell.classList.add("coin-image-second");
@@ -398,8 +398,8 @@
 
             // Display difficulty data
             difficultyCell.textContent = convertToTeraHash(difficulty?.networkDifficulty) + " Th/s";
-            difficultyCell2301.textContent = hardCodeDifficulty["23.01"][coin.symbol.toLowerCase()] + " Th/s";
             difficultyCell1202.textContent = hardCodeDifficulty1202["12.02"][coin.symbol.toLowerCase()] + " Th/s";
+            difficultyCell2301.textContent = hardCodeDifficulty["23.01"][coin.symbol.toLowerCase()] + " Th/s";
 
             row.appendChild(imageCell);
             row.appendChild(nameCell);
@@ -411,8 +411,8 @@
             row.appendChild(change200dCell);
             row.appendChild(change1yCell);
             row.appendChild(difficultyCell);
-            row.appendChild(difficultyCell2301);
             row.appendChild(difficultyCell1202);
+            row.appendChild(difficultyCell2301);
 
             const formattedSymbol = name.toLowerCase().replace(/ /g, "-");
 
