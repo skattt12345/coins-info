@@ -194,6 +194,7 @@
             <th>200 day(%)</th>
             <th>1 Year(%)</th>
             <th>Network</th>
+            <th>17.03.24</th>
             <th>12.02.24</th>
             <th>23.01.24</th>
           </tr>
@@ -208,10 +209,8 @@
 
       document.addEventListener("visibilitychange", function () {
         if (document.visibilityState === "visible") {
-          // Сторінка стала видимою
           clearTimeout(reloadTimeout);
         } else {
-          // Сторінка стала невидимою
           lastInvisibleTime = Date.now();
           reloadTimeout = setTimeout(function () {
             location.reload();
@@ -263,7 +262,6 @@
           }
 
           const data = await response.json();
-          console.log(data);
           return data;
         } catch (error) {
           console.error("Failed to fetch data:", error);
@@ -331,6 +329,7 @@
                 pac: "0.00",
                 avs: "2.63",
                 egaz: "1.22",
+                etnt: "0",
               },
             };
             const hardCodeDifficulty1202 = {
@@ -347,6 +346,24 @@
                 pac: "0.00",
                 avs: "3.01",
                 egaz: "1.04",
+                etnt: "248.3G",
+              },
+            };
+            const hardCodeDifficulty1703 = {
+              17.03: {
+                lrs: "28.36 ",
+                etc: "2263.58 ",
+                zil: "500.40",
+                ethw: "214.94",
+                octa: "83.55 ",
+                cau: "64.83",
+                clo: "0.38 ",
+                xpb: "27.47",
+                btn: "7.26",
+                pac: "0.00",
+                avs: "1.18",
+                egaz: "1.16",
+                etnt: "91.93G",
               },
             };
 
@@ -363,6 +380,20 @@
               image,
             } = coin;
 
+            const etntData = {
+              name: "ETNT",
+              symbol: "ETNT",
+              current_price: 0.021, // Set the current price
+              high_24h: 0, // Set the high price in the last 24 hours
+              price_change_percentage_24h_in_currency: 0, // Set the price change percentage in the last 24 hours
+              price_change_percentage_7d_in_currency: 0, // Set the price change percentage in the last 7 days
+              price_change_percentage_30d_in_currency: 0, // Set the price change percentage in the last 30 days
+              price_change_percentage_200d_in_currency: 0, // Set the price change percentage in the last 200 days
+              price_change_percentage_1y_in_currency: 0, // Set the price change percentage in the last year
+              image: "https://static.gtpool.io/img/coin/etnt.png", // Set the path to the ETNT image
+            };
+            coinData.push(etntData);
+
             const row = document.createElement("tr");
             const imageCell = document.createElement("td");
             const nameCell = document.createElement("td");
@@ -374,6 +405,7 @@
             const change200dCell = document.createElement("td");
             const change1yCell = document.createElement("td");
             const difficultyCell = document.createElement("td");
+            const difficultyCell0703 = document.createElement("td");
             const difficultyCell1202 = document.createElement("td");
             const difficultyCell2301 = document.createElement("td");
 
@@ -398,6 +430,7 @@
 
             // Display difficulty data
             difficultyCell.textContent = convertToTeraHash(difficulty?.networkDifficulty) + " Th/s";
+            difficultyCell0703.textContent = hardCodeDifficulty1703["17.03"][coin.symbol.toLowerCase()] + " Th/s";
             difficultyCell1202.textContent = hardCodeDifficulty1202["12.02"][coin.symbol.toLowerCase()] + " Th/s";
             difficultyCell2301.textContent = hardCodeDifficulty["23.01"][coin.symbol.toLowerCase()] + " Th/s";
 
@@ -411,6 +444,7 @@
             row.appendChild(change200dCell);
             row.appendChild(change1yCell);
             row.appendChild(difficultyCell);
+            row.appendChild(difficultyCell0703);
             row.appendChild(difficultyCell1202);
             row.appendChild(difficultyCell2301);
 
