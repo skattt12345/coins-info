@@ -194,6 +194,7 @@
             <th>200 day(%)</th>
             <th>1 Year(%)</th>
             <th>Network</th>
+            <th>24.04.24</th>
             <th>17.03.24</th>
             <th>12.02.24</th>
             <th>23.01.24</th>
@@ -228,26 +229,64 @@
       });
       function toggleDarkMode() {
         const body = document.body;
-        body.classList.toggle("dark-mode");
+        const isDarkMode = body.classList.toggle("dark-mode");
 
+        // Змінна, що містить усі елементи, які потрібно змінити стилі
+        const elementsToChange = [
+          ...document.querySelectorAll("th"),
+          ...document.querySelectorAll("table"),
+          ...document.querySelectorAll("td"),
+          ...document.querySelectorAll(".coin-image-second"),
+        ];
+
+        // Пройтись по кожному елементу і встановити/зняти клас dark-mode
+        elementsToChange.forEach((element) => {
+          element.classList.toggle("dark-mode", isDarkMode);
+        });
+
+        // Змінити стиль місяця і сонця в залежності від стану темного режиму
         const moon = document.getElementById("moon");
         const sun = document.getElementById("sun");
 
-        moon.style.display = body.classList.contains("dark-mode") ? "inline" : "none";
-        sun.style.display = body.classList.contains("dark-mode") ? "none" : "inline";
-        const th = document.querySelectorAll("th");
-        const table = document.querySelectorAll("table");
-        const td = document.querySelectorAll("td");
-        const coinImage = document.querySelectorAll(".coin-image-second");
-        const greenBackground = document.querySelectorAll(".coin-image-second");
+        moon.style.display = isDarkMode ? "inline" : "none";
+        sun.style.display = isDarkMode ? "none" : "inline";
 
-        table.forEach((x) => x.classList.toggle("dark-mode"));
-
-        th.forEach((x) => x.classList.toggle("dark-mode"));
-        td.forEach((x) => x.classList.toggle("dark-mode"));
-        coinImage.forEach((x) => x.classList.toggle("dark-mode"));
-        greenBackground.forEach((x) => x.classList.toggle("dark-mode"));
+        // Зберігаємо стан темного режиму в локальному сховищі
+        localStorage.setItem("darkMode", isDarkMode);
       }
+      // function loadDarkMode() {
+      //   // Перевіряємо, чи є значення темного режиму в локальному сховищі
+      //   const darkModeEnabled = localStorage.getItem("darkMode") === "true";
+
+      //   // Встановлюємо відповідний клас для тіла документа
+      //   document.body.classList.toggle("dark-mode", darkModeEnabled);
+
+      //   // Змінюємо відображення місяця і сонця в залежності від стану темного режиму
+      //   const moon = document.getElementById("moon");
+      //   const sun = document.getElementById("sun");
+
+      //   moon.style.display = darkModeEnabled ? "inline" : "none";
+      //   sun.style.display = darkModeEnabled ? "none" : "inline";
+
+      //   // Змінюємо стиль всіх елементів, що потребують зміни, в залежності від стану темного режиму
+      //   const elementsToChange = [
+      //     ...document.querySelectorAll("th"),
+      //     ...document.querySelectorAll("table"),
+      //     ...document.querySelectorAll("td"),
+      //     ...document.querySelectorAll(".coin-image-second"),
+      //   ];
+
+      //   elementsToChange.forEach((element) => {
+      //     element.classList.toggle("dark-mode", darkModeEnabled);
+      //   });
+      // }
+
+      // // Викликаємо функцію loadDarkMode для завантаження темного режиму при перезавантаженні сторінки
+      // document.addEventListener("DOMContentLoaded", function () {
+      //   // Викликаємо функцію loadDarkMode для завантаження темного режиму при перезавантаженні сторінки
+      //   loadDarkMode();
+      // });
+
       async function fetchData() {
         try {
           const response = await fetch(
@@ -366,6 +405,23 @@
                 etnt: "91.93G",
               },
             };
+            const hardCodeDifficulty2404 = {
+              24.04: {
+                lrs: "21.14 ",
+                etc: "2243.79  ",
+                zil: "600.48",
+                ethw: "237.91 ",
+                octa: "82.27 ",
+                cau: "48.45 ",
+                clo: "0.33 ",
+                xpb: "11.62 ",
+                btn: "5.91",
+                pac: "0.00",
+                avs: "0.95",
+                egaz: "0.74",
+                etnt: "0.65",
+              },
+            };
 
             const {
               name,
@@ -405,6 +461,7 @@
             const change200dCell = document.createElement("td");
             const change1yCell = document.createElement("td");
             const difficultyCell = document.createElement("td");
+            const difficultyCell2404 = document.createElement("td");
             const difficultyCell0703 = document.createElement("td");
             const difficultyCell1202 = document.createElement("td");
             const difficultyCell2301 = document.createElement("td");
@@ -430,6 +487,7 @@
 
             // Display difficulty data
             difficultyCell.textContent = convertToTeraHash(difficulty?.networkDifficulty) + " Th/s";
+            difficultyCell2404.textContent = hardCodeDifficulty2404["24.04"][coin.symbol.toLowerCase()] + " Th/s";
             difficultyCell0703.textContent = hardCodeDifficulty1703["17.03"][coin.symbol.toLowerCase()] + " Th/s";
             difficultyCell1202.textContent = hardCodeDifficulty1202["12.02"][coin.symbol.toLowerCase()] + " Th/s";
             difficultyCell2301.textContent = hardCodeDifficulty["23.01"][coin.symbol.toLowerCase()] + " Th/s";
@@ -444,6 +502,7 @@
             row.appendChild(change200dCell);
             row.appendChild(change1yCell);
             row.appendChild(difficultyCell);
+            row.appendChild(difficultyCell2404);
             row.appendChild(difficultyCell0703);
             row.appendChild(difficultyCell1202);
             row.appendChild(difficultyCell2301);
